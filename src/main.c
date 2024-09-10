@@ -39,9 +39,9 @@ int main() {
 	bmProgramState programState;
 	programState.window = window;
 
-	initMain(&programState);
+	bmInitMain(&programState);
 	// main loop
-	while (!glfwWindowShouldClose(window)) mainLoop(&programState);
+	while (!glfwWindowShouldClose(window)) bmMainLoop(&programState);
 
 	glfwTerminate();
 	return 0;

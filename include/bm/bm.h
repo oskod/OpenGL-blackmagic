@@ -1,3 +1,6 @@
+#ifndef __bm_main_h_
+#define __bm_main_h_
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -22,15 +25,17 @@ typedef struct {
 #pragma region STATE HANDLERS
 
 // init
-void initState(bmProgramState* programState);
-void initRender(bmProgramState* programState);
-void initMain(bmProgramState* programState);
+void bmInitState(bmProgramState* programState);
+void bmInitRender(bmProgramState* programState);
+void bmInitMain(bmProgramState* programState);
 
 // loops
-void processInput(bmProgramState* programState);
-void logic(bmProgramState* programState);
-void render(bmProgramState* programState);
-void processGL(bmProgramState* programState);
-void mainLoop(bmProgramState* programState);
+void bmProcessInput(bmProgramState* programState);
+void bmLogic(bmProgramState* programState);
+void bmRender(bmProgramState* programState);
+void bmProcessGL(bmProgramState* programState);
+void bmMainLoop(bmProgramState* programState);
 
 #pragma endregion
+
+#endif
