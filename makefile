@@ -19,3 +19,9 @@ release: dist
 	$(CFLAGS) $(LDFLAGS) \
 	-O3 -s -static \
 	-o dist/release
+
+debug: dist
+	$(COMP) $(SRC) \
+	$(CFLAGS) $(LDFLAGS) \
+	-Wall -Wextra \
+	-o dist/debug
