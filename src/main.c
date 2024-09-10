@@ -1,10 +1,7 @@
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
+#include "bm/bm.h"
 #include <stdio.h>
 #include <math.h>
-
-#define PI 3.14159265359
-#define TAU 6.28318530718
+#include <stdbool.h>
 
 #define terminate(message) { \
 	printf("TERMINATED:\n\t%s\n", message); \
@@ -12,36 +9,11 @@
 	return -1; \
 }
 
-typedef struct {
-	GLFWwindow* window;
-	double currentTime;
-	double delta;
-} bmProgramState;
-
-void logic(bmProgramState* programState) {
-	// time and delta
-	double currentTime = glfwGetTime();
-	programState->delta = currentTime - programState->currentTime;
-	programState->currentTime = currentTime;
+#pragma region OPENGL CALLBACKS
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
 }
-void render(bmProgramState* programState) {
-	glClearColor(
-		cosf(programState->currentTime) * 0.5 + 0.5,
-		cosf(programState->currentTime - TAU / 3.0) * 0.5 + 0.5,
-		cosf(programState->currentTime - TAU / 1.5) * 0.5 + 0.5,
-	1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
-}
-void process(bmProgramState* programState) {
-	glfwSwapBuffers(programState->window);
-
-	glfwPollEvents();
-}
-void mainLoop(bmProgramState* programState) {
-	logic(programState);
-	render(programState);
-	process(programState);
-}
+#pragma endregion
 
 int main() {
 	// Initialize GLFW, glad and rendering context
@@ -49,17 +21,25 @@ int main() {
 		printf("Failed to initialize GLFW");
 		return -1;
 	}
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(800, 600, "My awesome window", NULL, NULL);
 	if (!window) terminate("Failed to create window");
 
 	glfwMakeContextCurrent(window);
 
-	if (gladLoadGL() == 0) terminate("Could not initialize OpenGL context");
+	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0) terminate("Could not initialize OpenGL context");
+
+	// init
+	glViewport(0, 0, 800, 600);
+	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 
 	bmProgramState programState;
 	programState.window = window;
 
+	initMain(&programState);
 	// main loop
 	while (!glfwWindowShouldClose(window)) mainLoop(&programState);
 
