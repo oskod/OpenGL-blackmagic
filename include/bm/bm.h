@@ -19,6 +19,9 @@ typedef struct {
 	double currentTime;
 	double delta;
 	vec2 pos;
+
+	unsigned int currentShaderProgram;
+	unsigned int VAO;
 } bmProgramState;
 
 #pragma endregion
